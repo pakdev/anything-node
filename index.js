@@ -1,4 +1,5 @@
 'use strict';
+
 const app = require('app');
 const Tray = require('tray');
 const Menu = require('menu');
