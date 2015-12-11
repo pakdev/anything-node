@@ -9,17 +9,14 @@
     "name": "Peter Kurlak",
     "email": "pkurlak@gmail.com"
   },
-  "engines": {
-    "node": ">=4"
-  },
-  "electronVersion": "0.34.0",
+  "electronVersion": "0.35.0",
   "scripts": {
     "test": "xo",
-    "build": "set NODE_ENV='production'; electron-packager . $npm_package_productName --out=dist --ignore='^/dist$' --prune --asar --all --version=$npm_package_electronVersion",
     "build-sass": "node-sass --include-path src/styles --source-map index.map src/styles/index.scss index.css",
     "watch-sass": "nodemon -e scss -x \"npm run build-sass\"",
-    "start": "set NODE_ENV='dev'; electron . & webpack --watch --progress --colors --output-source-map-file & npm run watch-sass",
-    "app": "./node_modules/.bin/electron ."
+    "watch": "webpack --watch --progress --colors --output-source-map-file & npm run watch-sass",
+    "start": "electron .",
+    "build": "electron-packager . $npm_package_productName --out=dist --ignore='^/dist$' --prune --asar --all --version=$npm_package_electronVersion"
   },
   "files": [
     "index.js",
@@ -27,38 +24,34 @@
     "index.css"
   ],
   "keywords": [
-    "electron-app"
+    "electron-app",
+    "electron"
   ],
   "dependencies": {
     "bootstrap-sass": "^3.3.6",
-    "bootstrap-sass-loader": "^1.0.9",
-    "electron": "^0.4.1",
-    "electron-debug": "^0.2.1",
+    "electron-debug": "^0.5.0",
     "ffi": "^2.0.0",
     "jquery": "^2.1.4",
     "react": "^0.14.3",
     "react-dom": "^0.14.3"
   },
   "devDependencies": {
-    "babel-core": "^5.8.25",
-    "babel-loader": "^5.3.2",
-    "browser-sync": "^2.9.6",
-    "browser-sync-webpack-plugin": "^1.0.0",
-    "css-loader": "^0.19.0",
+    "babel-core": "^6.3.15",
+    "babel-loader": "^6.2.0",
+    "bootstrap-sass-loader": "^1.0.9",
+    "css-loader": "^0.23.0",
     "electron-packager": "^5.0.0",
-    "electron-prebuilt": "^0.34.0",
+    "electron-prebuilt": "^0.35.0",
     "electron-rebuild": "^1.0.2",
     "file-loader": "^0.8.5",
     "jsx-loader": "^0.13.2",
-    "node-sass": "^3.3.3",
-    "nodemon": "^1.7.0",
-    "raw-loader": "^0.5.1",
-    "sass-loader": "^2.0.1",
-    "style-loader": "^0.12.4",
+    "node-sass": "^3.4.2",
+    "sass-loader": "^3.1.2",
+    "style-loader": "^0.13.0",
     "url-loader": "^0.5.7",
-    "webpack": "^1.12.2",
+    "webpack": "^1.12.9",
     "webpack-target-electron-renderer": "^0.2.0",
-    "xo": "^0.9.0"
+    "xo": "^0.11.1"
   },
   "xo": {
     "esnext": true,

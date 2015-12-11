@@ -1,21 +1,23 @@
 'use strict';
 
-const app = require('app');
-const Tray = require('tray');
-const Menu = require('menu');
-const BrowserWindow = require('browser-window');
+const electron = require('electron');
+const app = electron.app;
+const BrowserWindow = electron.BrowserWindow;
+const Menu = electron.Menu;
+const Tray = electron.Tray;
+// const GlobalShortcut = electron.GlobalShortcut;
+// const app = require('app');
+// const Tray = require('tray');
+// const Menu = require('menu');
+// const BrowserWindow = require('browser-window');
 const GlobalShortcut = require('global-shortcut');
 
+// TODO: Enable
 // report crashes to the Electron project
-require('crash-reporter').start();
+// require('crash-reporter').start();
 
 // adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
-var indexFile = `${__dirname}/index.html`;
-
-if (process.env['NODE_ENV'] == 'dev') {
-    indexFile = "http://localhost:9999";
-}
 
 // prevent window being garbage collected
 let mainWindow;
@@ -30,26 +32,19 @@ function createMainWindow() {
     const win = new BrowserWindow({
         title: 'Anything',
         width: 600,
-        height: 46,
+        height: 400, // 46
         frame: false,
         center: true,
         resizable: false,
-        skipTaskbar: true,
+        skipTaskbar: false,
         alwaysOnTop: true,
-        transparent: true,
+        transparent: false,
         acceptFirstMouse: true
     });
     
-    if (process.env['NODE_ENV'] == 'dev') {
-        // we need to wait until browsersync is ready
-        setTimeout(function() {
-            win.loadUrl(indexFile);
-        }, 5000);
-    } else {
-        win.loadUrl(`file:${indexFile}`);
-    }
-    
+    win.loadURL(`file://${__dirname}/index.html`);
     win.on('closed', onClosed);
+
     return win;
 }
 

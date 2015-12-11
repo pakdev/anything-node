@@ -1,7 +1,6 @@
 'use strict'
 
 const webpack = require('webpack');
-const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 const webpackTargetElectronRenderer = require('webpack-target-electron-renderer');
 
 let config = {
@@ -9,7 +8,7 @@ let config = {
     output: {
         path: __dirname + "/build",
         publicPath: 'build/',
-        filename: 'main.js'
+        filename: 'bundle.js'
     },
     devtool: 'source-map',
     stats: {
@@ -17,15 +16,16 @@ let config = {
         modules: true,
         reasons: true
     },
-    resolve: {
-        extensions: ['', '.js', '.jsx']
-    },
     module: {
         loaders: [
             {
-                test: /\.js(x)?$/,
+                test: /\.js$/,
                 loader: 'babel-loader',
                 exclude: /node_modules/
+            },
+            {
+                test: /\.jsx$/,
+                loader: 'jsx-loader?harmony&insertPragma=React.DOM'
             },
             {
                 test: /\.scss$/,
@@ -42,21 +42,14 @@ let config = {
         ]
     },
     plugins: [
-        new webpack.NoErrorsPlugin(),
-        new BrowserSyncPlugin({
-            host: 'localhost',
-            port: 9999,
-            open: false,
-            files: ['index.html', 'build/main.js'],
-            server: {
-                baseDir: ['.']
-            }
-        }),
         new webpack.DefinePlugin({
             'process.env': { 
                 NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development') 
             }
         })
+    ],
+    externals: [
+        {'ffi': 'ffi'}
     ]
 };
 
