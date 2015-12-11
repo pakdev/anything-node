@@ -7,4 +7,4 @@ const React = require('react');
 const ReactDOM = require('react-dom');
 const Anything = require('./components/anything.jsx');
 
-ReactDOM.render(<Anything />, document.getElementById('content'));
+ReactDOM.render(<Anything />, document.getElementById('content');

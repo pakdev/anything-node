@@ -1,15 +1,9 @@
 'use strict';
 
-const electron = require('electron');
-const app = electron.app;
-const BrowserWindow = electron.BrowserWindow;
-const Menu = electron.Menu;
-const Tray = electron.Tray;
-// const GlobalShortcut = electron.GlobalShortcut;
-// const app = require('app');
-// const Tray = require('tray');
-// const Menu = require('menu');
-// const BrowserWindow = require('browser-window');
+const app = require('app');
+const Tray = require('tray');
+const Menu = require('menu');
+const BrowserWindow = require('browser-window');
 const GlobalShortcut = require('global-shortcut');
 
 // TODO: Enable
@@ -33,13 +27,13 @@ function createMainWindow() {
         title: 'Anything',
         width: 600,
         height: 400, // 46
-        frame: false,
+        frame: true,
         center: true,
         resizable: false,
-        skipTaskbar: false,
+        skipTaskbar: true,
         alwaysOnTop: true,
-        transparent: false,
-        acceptFirstMouse: true
+        transparent: true,
+        acceptFirstMouse: false
     });
     
     win.loadURL(`file://${__dirname}/index.html`);
@@ -79,6 +73,7 @@ app.on('ready', () => {
 });
 
 app.on('blur', () => {
+    console.log('blurred');
     mainWindow.hide();
 });
 

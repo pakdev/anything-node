@@ -49,7 +49,7 @@ let config = {
         })
     ],
     externals: [
-        {'ffi': 'ffi'}
+        'ffi', 'ref'
     ]
 };
 

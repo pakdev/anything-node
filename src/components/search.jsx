@@ -2,26 +2,52 @@
 
 const React = require('react');
 const remote = require('electron').remote;
-const ffi = remote.require('ffi');
+const Everything = remote.require('./src/everything');
 
 module.exports = React.createClass({
-    getDefaultProps() {
-        const everything = ffi.Library('./../../lib/Everything64.dll', {
-            'Everything_SetSearchA': ['void', ['string']],
-            'Everything_SetMax': ['void', ['ulong']],
-            'Everything_QueryA': ['bool', ['bool']],
-            'Everything_GetNumResults': ['ulong', []]
-        });
+    query(searchTerm) {
+        // first search for applications
+        var i = 0;
+        var results = [];
 
-        return { lib: everything };
+        searchTerm = searchTerm.trim();
+        if (searchTerm) {
+            for (let filename in this.applications) {
+                if (filename.match(new RegExp(`^${searchTerm}$`, 'i'))) {
+                    results.push({ rating: 5, path: this.applications[filename], name: filename, key: i++ });
+                }
+                else if (filename.match(new RegExp(`^${searchTerm}`, 'i'))) {
+                    results.push({ rating: 4, path: this.applications[filename], name: filename, key: i++ });
+                }
+                else if (filename.match(new RegExp(`\\b${searchTerm}`, 'i'))) {
+                    results.push({ rating: 3, path: this.applications[filename], name: filename, key: i++ });
+                }
+                else if (filename.match(new RegExp(searchTerm, 'i'))) {
+                    results.push({ rating: 2, path: this.applications[filename], name: filename, key: i++ });
+                }
+                else {
+                    // split into words
+                    // query
+                    // split into characters
+                }
+            }
+        }
+
+        this.props.onResults(results);
     },
-    componentWillMount() {
-        this.props.lib.Everything_SetMax(10);
+    componentDidMount() {
+        this.timeout = null;
+        this.everything = new Everything();
+        this.applications = this.everything.getApplications();
     },
     onSearchChange(e) { 
-        this.props.lib.Everything_SetSearchA(e.target.value);
-        this.props.lib.Everything_QueryA(false);
-        // console.log(this.props.lib.Everything_GetNumResults());
+        if (this.timeout) {
+            clearTimeout(this.timeout);
+        }
+        this.timeout = setTimeout(() => {
+            console.log(e.target.value);
+            this.query(e.target.value);
+        }, 250);
     },
     render() {
         var topsAligned = {top: 0};
